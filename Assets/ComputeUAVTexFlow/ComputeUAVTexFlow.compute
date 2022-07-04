@@ -45,7 +45,7 @@ void CSMain (uint3 id : SV_DispatchThreadID)
 	//move pixels ----------------------
 	int2 pID = id.xy;
 	float4 p = Result[pID];
-
+	//是沙子就判斷是否往下掉
 	if(p.x == 1)
 	{
 		//move down

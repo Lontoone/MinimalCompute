@@ -41,11 +41,14 @@ public class ComputeParticlesDirect_Builtin : MonoBehaviour
 	{
 		computeShader.Dispatch(0, warpCount, 1, 1);
 	}
-
-	void OnRenderObject()
+    //OnRenderObject is called after camera has rendered the Scene.
+    void OnRenderObject()
 	{
-		material.SetPass(0);
-		Graphics.DrawProceduralNow(MeshTopology.Points,1,particleCount);
+        //This is mostly used in direct drawing code. For example, drawing 3D primitives with GL.Begin, GL.End, and also drawing meshes using Graphics.DrawMeshNow.
+        //指定使用mat的pass去渲染這層
+        material.SetPass(0);
+        //DrawProceduralNow 在 GPU 上執行繪製調用，沒有任何頂點或索引緩衝區。
+        Graphics.DrawProceduralNow(MeshTopology.Points,1,particleCount);
 	}
 
 	void OnDestroy()

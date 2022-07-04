@@ -8,7 +8,9 @@ RWTexture2D<float4> Result;
 [numthreads(8,8,1)]
 void CSMain (uint3 id : SV_DispatchThreadID)
 {
+	//該像素點取樣顏色
     float4 baseColor = float4(id.x & id.y, (id.x & 15)/15.0, (id.y & 15)/15.0, 1.0);
+	//純色
 	float4 color = Result[id.xy];
 	
     //Rainbow color

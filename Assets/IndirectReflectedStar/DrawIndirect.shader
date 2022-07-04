@@ -20,6 +20,7 @@ Shader "Custom/IndirectReflectedStar"
 		//================= For defining star position
 		Pass
 		{
+			//覆蓋所有圖層，但不修改深度，且不套用Fog
 			ZWrite Off ZTest Always Cull Off Fog { Mode Off }
 
 			CGPROGRAM
@@ -62,16 +63,18 @@ Shader "Custom/IndirectReflectedStar"
 			float4 frag (v2f i) : COLOR0
 			{
 				float2 uv = i.uv;
-
+				//取樣該uv點周圍顏色
 				float4 c = tex2D (_MainTex, uv);
 				float4 c1 = tex2D (_MainTex, uv + saturate(float2(1,0) * _SampleDistance) );
 				float4 c2 = tex2D (_MainTex, uv + saturate(float2(0,1) * _SampleDistance) );
 				float4 c3 = tex2D (_MainTex, uv + saturate(float2(-1,0) * _SampleDistance) );
 				float4 c4 = tex2D (_MainTex, uv + saturate(float2(0,-1) * _SampleDistance) );
-
+				//顏色轉亮度相加，公式l = color.r * 0.3 + color.g * 0.59 + color.b * 0.11
 				float lumc = Luminance(c) + Luminance(c1) + Luminance(c2) + Luminance(c3) + Luminance(c4);
 				lumc /= 5.0f;
 
+				// [branch] => 只能執行if (true)，不會執行 else
+				// [flatten] => if(true) 跟 else()... 內的程式碼都執行，但只輸出if(true)的結果
 				[branch]
 				if (lumc > _Threshold )// && lumc > lumc1)
 				{

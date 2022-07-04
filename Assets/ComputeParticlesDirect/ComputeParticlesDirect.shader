@@ -35,7 +35,8 @@ Shader "ComputeParticlesDirect"
 			float4 _Color1;
 			float4 _Color2;
 			float _pSize;
-			
+			//SV_VertexID : 表示第几个顶点，依次从第0开始…这样在进行顶点动画时，可以对指定顶点进行采样
+			//SV_InstanceID 來自C#面的particleCount： Graphics.DrawProceduralNow(MeshTopology.Points,1,particleCount); 
 			v2f vert (uint id : SV_VertexID, uint inst : SV_InstanceID)
 			{
 				v2f o;
